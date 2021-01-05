@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[32,)"
+license="All rights reserved"
+issueTrackerURL="https://github.com/hammertater/treeplant/issues"
+
+[[mods]]
+modId="treeplant"
+version="${file.jarVersion}"
+updateJSONURL="https://raw.githubusercontent.com/hammertater/treeplant/main/update.json"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/treeplant"
+logoFile="logo.png"
+authors="HammerTater"
+description="Let saplings plant themselves."

@@ -1,0 +1,16 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "treeplant",
+    "name": "HT's TreeChop",
+    "description": "Makes trees more choppable.",
+    "version": "${mod_version}",
+    "mcversion": "${minecraft_version}",
+    "updateUrl": "https://raw.githubusercontent.com/hammertater/treeplant/main/update.json",
+    "authorList": [ "HammerTater" ],
+    "logoFile": "logo.png",
+    "screenshots": [  ],
+    "parent": "",
+    "dependants": [  ]
+  }]
+}
