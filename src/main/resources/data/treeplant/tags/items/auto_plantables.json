@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "#minecraft:saplings",
-    "#forge:mushrooms",
-    "#forge:fungi"
+    "#forge:mushrooms"
   ]
 }

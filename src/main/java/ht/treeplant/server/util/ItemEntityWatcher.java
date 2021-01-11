@@ -34,32 +34,32 @@ class ItemEntityWatcher {
         if (itemEntity != null && itemEntity.isAlive()) {
             ItemStack itemStack = itemEntity.getItem();
             Item item = itemStack.getItem();
-            if (item instanceof BlockItem &&
-                    noNearbySaplings(
-                            itemEntity.getEntityWorld(),
-                            itemEntity.getPosition(),
-                            ((BlockItem) item).getBlock()
-                    )
-            ) {
-                ActionResultType result = ((BlockItem) item).tryPlace(
-                        new DirectionalPlaceContext(
-                                itemEntity.world,
-                                itemEntity.getPosition(),
-                                Direction.DOWN,
-                                itemStack,
-                                Direction.UP
-                        )
-                );
+            if (item instanceof BlockItem) {
+                if (noNearbySaplings(
+                        itemEntity.getEntityWorld(),
+                        itemEntity.getPosition(),
+                        ((BlockItem) item).getBlock()
+                )) {
+                    ActionResultType result = ((BlockItem) item).tryPlace(
+                            new DirectionalPlaceContext(
+                                    itemEntity.world,
+                                    itemEntity.getPosition(),
+                                    Direction.DOWN,
+                                    itemStack,
+                                    Direction.UP
+                            )
+                    );
 
-                if (!result.isSuccess()) {
-                    totalNumTicks += tick;
-                    if (totalNumTicks < lastPossibleTick) {
-                        tick += ConfigHandler.numTicksBetweenTries;
-                        AutoPlant.keepWatching(this);
+                    if (!result.isSuccess()) {
+                        totalNumTicks += tick;
+                        if (totalNumTicks < lastPossibleTick) {
+                            tick += ConfigHandler.numTicksBetweenTries;
+                            AutoPlant.keepWatching(this);
+                        }
                     }
                 }
             } else {
-                TreePlant.LOGGER.warn("Watched item is not a BlockItem");
+                TreePlant.LOGGER.warn("I don't know how to plant " + item.getRegistryName() + " (" + item.getItem().getClass().getName() + " is not an instance of " + BlockItem.class.getName() + ")");
             }
         }
     }

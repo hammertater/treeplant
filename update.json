@@ -1,15 +1,29 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/treeplant",
   "promos": {
-    "1.16.4-latest": "0.1.0",
-    "1.16.4-recommended": "0.1.0",
-    "1.16.3-latest": "0.1.0",
-    "1.16.3-recommended": "0.1.0"
+    "1.16.4-latest": "0.1.1",
+    "1.16.4-recommended": "0.1.1",
+    "1.16.3-latest": "0.1.1",
+    "1.16.3-recommended": "0.1.1",
+    "1.16.1-latest": "0.1.1",
+    "1.16.1-recommended": "0.1.1",
+    "1.15.2-latest": "0.1.1",
+    "1.15.2-recommended": "0.1.1"
   },
   "1.16.4": {
-    "0.1.0": "First version"
+    "0.1.0": "First version",
+    "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages"
   },
   "1.16.3": {
-    "0.1.0": "First version"
+    "0.1.0": "First version",
+    "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages"
+  },
+  "1.16.1": {
+    "0.1.0": "First version",
+    "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages"
+  },
+  "1.15.2": {
+    "0.1.0": "First version",
+    "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages"
   }
 }
