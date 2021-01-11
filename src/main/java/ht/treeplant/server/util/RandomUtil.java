@@ -1,7 +1,5 @@
 package ht.treeplant.server.util;
 
-import net.minecraft.loot.RandomValueRange;
-
 import java.util.Random;
 
 public class RandomUtil {
