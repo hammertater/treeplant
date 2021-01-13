@@ -1,5 +1,6 @@
 package ht.treeplant.server.config;
 
+import ht.treeplant.server.util.AutoPlant;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
@@ -10,6 +11,11 @@ public class ConfigHandler {
     public static int numTicksBetweenTries;
     public static ResourceLocation itemTagForSaplings;
     public static boolean allowPlantingWithRightClick;
+
+    public static void onLoad() {
+        onReload();
+        AutoPlant.init();
+    }
 
     public static void onReload() {
         numTicksToRetryPlanting = Math.max(1, secondsToTicks(COMMON.numSecondsToRetryPlanting.get()));
