@@ -9,14 +9,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class AutoPlant {
 
@@ -26,23 +24,33 @@ public class AutoPlant {
     private static BlockPos lastBrokenPos;
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.addListener(AutoPlant::onToss);
-        MinecraftForge.EVENT_BUS.addListener(AutoPlant::onBreak);
-        MinecraftForge.EVENT_BUS.register(AutoPlant.class);
+        MinecraftForge.EVENT_BUS.addListener(AutoPlant::watchItemEntities);
+        MinecraftForge.EVENT_BUS.addListener(AutoPlant::detectPlayerToss);
+        MinecraftForge.EVENT_BUS.addListener(AutoPlant::detectPlayerBlockBreak);
+
+        // TODO: repeat this check in ConfigHandler.onReload
+        if (!ConfigHandler.allowPlantingWithRightClick) {
+            MinecraftForge.EVENT_BUS.addListener(AutoPlant::preventManualPlanting);
+        }
     }
 
-    public static void onToss(ItemTossEvent event) {
+    public static void detectPlayerToss(ItemTossEvent event) {
         lastTossedItem = event.getEntityItem();
     }
 
-    public static void onBreak(BlockEvent.BreakEvent event) {
+    public static void detectPlayerBlockBreak(BlockEvent.BreakEvent event) {
         if (event.getPlayer() != null) {
             lastBrokenPos = event.getPos();
         }
     }
 
-    @SubscribeEvent()
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+    public static void preventManualPlanting(PlayerInteractEvent.RightClickBlock event) {
+        if (!event.getPlayer().isCreative() && event.getItemStack().getItem().getTags().contains(ConfigHandler.itemTagForSaplings)) {
+            event.setUseItem(Event.Result.DENY);
+        }
+    }
+
+    public static void watchItemEntities(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof ItemEntity && ((ItemEntity) entity).getItem().getItem().getTags().contains(ConfigHandler.itemTagForSaplings)) {
             PlantingConfig plantingConfig;

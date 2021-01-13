@@ -9,11 +9,13 @@ public class ConfigHandler {
     public static int numTicksToRetryPlanting;
     public static int numTicksBetweenTries;
     public static ResourceLocation itemTagForSaplings;
+    public static boolean allowPlantingWithRightClick;
 
     public static void onReload() {
         numTicksToRetryPlanting = Math.max(1, secondsToTicks(COMMON.numSecondsToRetryPlanting.get()));
         numTicksBetweenTries = Math.max(1, secondsToTicks(COMMON.numSecondsBetweenTries.get()));
         itemTagForSaplings = new ResourceLocation(COMMON.itemTagForPlantableItems.get());
+        allowPlantingWithRightClick = COMMON.allowPlantingWithRightClick.get();
 
         COMMON.naturalSaplings.refresh();
         COMMON.tossedSaplings.refresh();
@@ -29,6 +31,7 @@ public class ConfigHandler {
         protected final ForgeConfigSpec.ConfigValue<String> itemTagForPlantableItems;
         protected final ForgeConfigSpec.DoubleValue numSecondsToRetryPlanting;
         protected final ForgeConfigSpec.DoubleValue numSecondsBetweenTries;
+        protected final ForgeConfigSpec.BooleanValue allowPlantingWithRightClick;
 
         public final PlantingConfig naturalSaplings;
         public final PlantingConfig tossedSaplings;
@@ -62,13 +65,16 @@ public class ConfigHandler {
             );
             builder.pop();
 
-            builder.push("Planting mechanics");
+            builder.push("Miscellaneous");
             numSecondsToRetryPlanting = builder
                     .comment("The number of seconds to keep trying to plant a sapling after the first attempt")
                     .defineInRange("numSecondsToRetryPlanting", 120.0, 0, 100000);
             numSecondsBetweenTries = builder
                     .comment("The number of seconds to wait before trying to plant after a failed attempt")
                     .defineInRange("numSecondsBetweenTries", 1.0, 0, 100000);
+            allowPlantingWithRightClick = builder
+                    .comment("Whether to allow players to plant saplings by right-clicking on dirt")
+                    .define("allowRightClickPlanting", true);
             builder.pop();
         }
     }
