@@ -22,9 +22,7 @@ public class TreePlant {
 
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modBus.addListener((ModConfig.Loading e) -> ConfigHandler.onReload());
+        modBus.addListener((ModConfig.Loading e) -> ConfigHandler.onLoad());
         modBus.addListener((ModConfig.Reloading e) -> ConfigHandler.onReload());
-
-        AutoPlant.init();
     }
 }

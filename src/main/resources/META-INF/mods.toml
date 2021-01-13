@@ -6,6 +6,7 @@ issueTrackerURL="https://github.com/hammertater/treeplant/issues"
 [[mods]]
 modId="treeplant"
 version="${file.jarVersion}"
+displayName="HT's TreePlant"
 updateJSONURL="https://raw.githubusercontent.com/hammertater/treeplant/main/update.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/treeplant"
 logoFile="logo.png"
