@@ -53,19 +53,22 @@ public class ConfigHandler {
             builder.push("When to plant");
             naturalSaplings = new PlantingConfig(builder,
                     "Saplings that fall naturally (e.g. when leaves decay or when using tree felling mods)",
-                    2.0,
+                    1.0,
+                    3.0,
                     1.0,
                     2
             );
             tossedSaplings = new PlantingConfig(builder,
                     "Saplings that drop when a player breaks a block",
-                    2.0,
+                    1.0,
                     0.0,
+                    3.0,
                     1
             );
             brokenSaplings = new PlantingConfig(builder,
                     "Saplings tossed by players",
                     2.0,
+                    0.0,
                     0.0,
                     1
             );
