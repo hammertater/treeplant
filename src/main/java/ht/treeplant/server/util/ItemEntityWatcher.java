@@ -2,6 +2,7 @@ package ht.treeplant.server.util;
 
 import ht.treeplant.TreePlant;
 import ht.treeplant.server.config.ConfigHandler;
+import ht.treeplant.server.config.PlantingConfig;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.BlockItem;
@@ -22,11 +23,13 @@ class ItemEntityWatcher {
     private int totalNumTicks = 0;
     private final long lastPossibleTick;
     private WeakReference<ItemEntity> ref;
+    private final PlantingConfig plantingConfig;
 
-    public ItemEntityWatcher(ItemEntity itemEntity, long tickZero) {
-        ref = new WeakReference<>(itemEntity);
-        tick = tickZero + ConfigHandler.numTicksBeforePlanting + (int) (RandomUtil.get(Math.min(MAX_TICK_ENTROPY, ConfigHandler.numTicksBetweenTries)));
-        lastPossibleTick = tick + ConfigHandler.numTicksToRetryPlanting;
+    public ItemEntityWatcher(ItemEntity itemEntity, long tickZero, PlantingConfig plantingConfig) {
+        this.ref = new WeakReference<>(itemEntity);
+        this.tick = tickZero + plantingConfig.getNumTicksBeforePlanting() + (int) (RandomUtil.get(Math.min(MAX_TICK_ENTROPY, ConfigHandler.numTicksBetweenTries)));
+        this.lastPossibleTick = tick + ConfigHandler.numTicksToRetryPlanting;
+        this.plantingConfig = plantingConfig;
     }
 
     public void activate() {
@@ -54,7 +57,7 @@ class ItemEntityWatcher {
                         totalNumTicks += tick;
                         if (totalNumTicks < lastPossibleTick) {
                             tick += ConfigHandler.numTicksBetweenTries;
-                            AutoPlant.keepWatching(this);
+                            AutoPlant.watch(this);
                         }
                     }
                 }
@@ -65,7 +68,7 @@ class ItemEntityWatcher {
     }
 
     private boolean noNearbySaplings(World world, BlockPos pos, Block block) {
-        int dis = ConfigHandler.minDistanceBetweenSaplings - 1;
+        int dis = plantingConfig.getMinDistanceBetweenSaplings() - 1;
         for (int x = -dis; x <= dis; ++x) {
             for (int z = -dis; z <= dis; ++z) {
                 if (world.getBlockState(pos.add(x, 0, z)).getBlock() == block) {

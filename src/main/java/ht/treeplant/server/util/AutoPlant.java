@@ -1,6 +1,7 @@
 package ht.treeplant.server.util;
 
 import ht.treeplant.server.config.ConfigHandler;
+import ht.treeplant.server.config.PlantingConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,14 +23,8 @@ public class AutoPlant {
     private static BlockPos lastBrokenPos;
 
     public static void init() {
-        if (!ConfigHandler.plantTossedSaplings) {
-            MinecraftForge.EVENT_BUS.addListener(AutoPlant::onToss);
-        }
-
-        if (!ConfigHandler.replantBrokenSaplings) {
-            MinecraftForge.EVENT_BUS.addListener(AutoPlant::onBreak);
-        }
-
+        MinecraftForge.EVENT_BUS.addListener(AutoPlant::onToss);
+        MinecraftForge.EVENT_BUS.addListener(AutoPlant::onBreak);
         MinecraftForge.EVENT_BUS.register(AutoPlant.class);
     }
 
@@ -46,26 +41,31 @@ public class AutoPlant {
     @SubscribeEvent()
     public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
-        if (
-                entity instanceof ItemEntity
-                && ((ItemEntity) entity).getItem().getItem().getTags().contains(ConfigHandler.itemTagForSaplings)
-                && entity != lastTossedItem
-                && !entity.getPosition().equals(lastBrokenPos)
-                && RandomUtil.get(1.0) <= ConfigHandler.chanceToTryPlanting
-        ) {
-            watch((ItemEntity) entity);
+        if (entity instanceof ItemEntity && ((ItemEntity) entity).getItem().getItem().getTags().contains(ConfigHandler.itemTagForSaplings)) {
+            PlantingConfig plantingConfig;
+            if (entity == lastTossedItem) {
+                plantingConfig = ConfigHandler.COMMON.tossedSaplings;
+            } else if (entity.getPosition().equals(lastBrokenPos)) {
+                plantingConfig = ConfigHandler.COMMON.brokenSaplings;
+            } else {
+                plantingConfig = ConfigHandler.COMMON.naturalSaplings;
+            }
+
+            if (RandomUtil.get(1.0) <= plantingConfig.getChanceOfPlanting()) {
+                watch((ItemEntity) entity, plantingConfig);
+            }
         }
     }
 
-    public static void watch(ItemEntity itemEntity) {
+    public static void watch(ItemEntity itemEntity, PlantingConfig plantingConfig) {
+        watch(new ItemEntityWatcher(itemEntity, tick, plantingConfig));
+    }
+
+    public static void watch(ItemEntityWatcher watcher) {
         if (!TickHandler.isRegistered) {
             MinecraftForge.EVENT_BUS.register(TickHandler.class);
             TickHandler.isRegistered = true;
         }
-        watchers.add(new ItemEntityWatcher(itemEntity, tick));
-    }
-
-    public static void keepWatching(ItemEntityWatcher watcher) {
         watchers.add(watcher);
     }
 
