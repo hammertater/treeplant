@@ -12,12 +12,15 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class AutoPlant {
 
-    private static Queue<ItemEntityWatcher> watchers = new LinkedList<>();
+    private static PriorityQueue<ItemEntityWatcher> watchers = new PriorityQueue<>();
     private static long tick = 0;
     private static ItemEntity lastTossedItem;
     private static BlockPos lastBrokenPos;
@@ -74,14 +77,14 @@ public class AutoPlant {
 
         @SubscribeEvent
         public static void onTick(TickEvent.ServerTickEvent event) {
-            if (watchers.peek() != null) {
+            if (!watchers.isEmpty()) {
                 ++tick;
 
                 while (true) {
                     ItemEntityWatcher top = watchers.peek();
                     if (top != null && top.tick <= tick) {
-                        top.activate();
                         watchers.poll();
+                        top.activate();
                     } else {
                         break;
                     }

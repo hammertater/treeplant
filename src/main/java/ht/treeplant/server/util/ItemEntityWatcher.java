@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.lang.ref.WeakReference;
 
-class ItemEntityWatcher {
+class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
     private static final int MAX_TICK_ENTROPY = 20;
 
     long tick;
@@ -77,5 +77,10 @@ class ItemEntityWatcher {
             }
         }
         return true;
+    }
+
+    @Override
+    public int compareTo(ItemEntityWatcher other) {
+        return Long.compare(this.tick, other.tick);
     }
 }
