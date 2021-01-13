@@ -27,7 +27,7 @@ class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
 
     public ItemEntityWatcher(ItemEntity itemEntity, long tickZero, PlantingConfig plantingConfig) {
         this.ref = new WeakReference<>(itemEntity);
-        this.tick = tickZero + plantingConfig.getNumTicksBeforePlanting() + (int) (RandomUtil.get(Math.min(MAX_TICK_ENTROPY, ConfigHandler.numTicksBetweenTries)));
+        this.tick = tickZero + (int) RandomUtil.get(plantingConfig.getWiggle());
         this.lastPossibleTick = tick + ConfigHandler.numTicksToRetryPlanting;
         this.plantingConfig = plantingConfig;
     }
