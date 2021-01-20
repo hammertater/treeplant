@@ -4,6 +4,7 @@ import ht.treeplant.server.config.ConfigHandler;
 import ht.treeplant.server.config.PlantingConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -52,18 +53,21 @@ public class AutoPlant {
 
     public static void watchItemEntities(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof ItemEntity && ((ItemEntity) entity).getItem().getItem().getTags().contains(ConfigHandler.itemTagForSaplings)) {
-            PlantingConfig plantingConfig;
-            if (entity == lastTossedItem) {
-                plantingConfig = ConfigHandler.COMMON.tossedSaplings;
-            } else if (entity.getPosition().equals(lastBrokenPos)) {
-                plantingConfig = ConfigHandler.COMMON.brokenSaplings;
-            } else {
-                plantingConfig = ConfigHandler.COMMON.naturalSaplings;
-            }
+        if (entity instanceof ItemEntity) {
+            ItemStack itemStack = ((ItemEntity) entity).getItem();
+            if (!itemStack.isEmpty() && itemStack.getItem().getTags().contains(ConfigHandler.itemTagForSaplings)) {
+                PlantingConfig plantingConfig;
+                if (entity == lastTossedItem) {
+                    plantingConfig = ConfigHandler.COMMON.tossedSaplings;
+                } else if (entity.getPosition().equals(lastBrokenPos)) {
+                    plantingConfig = ConfigHandler.COMMON.brokenSaplings;
+                } else {
+                    plantingConfig = ConfigHandler.COMMON.naturalSaplings;
+                }
 
-            if (RandomUtil.get(1.0) <= plantingConfig.getChanceOfPlanting()) {
-                watch((ItemEntity) entity, plantingConfig);
+                if (RandomUtil.get(1.0) <= plantingConfig.getChanceOfPlanting()) {
+                    watch((ItemEntity) entity, plantingConfig);
+                }
             }
         }
     }
