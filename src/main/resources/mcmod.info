@@ -2,8 +2,8 @@
   "modListVersion": 2,
   "modList": [{
     "modid": "treeplant",
-    "name": "HT's TreeChop",
-    "description": "Makes trees more choppable.",
+    "name": "HT's TreePlant",
+    "description": "Let saplings plant themselves.",
     "version": "${mod_version}",
     "mcversion": "${minecraft_version}",
     "updateUrl": "https://raw.githubusercontent.com/hammertater/treeplant/main/update.json",
