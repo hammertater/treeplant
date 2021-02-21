@@ -1,6 +1,6 @@
 package ht.treeplant.server.config;
 
-import ht.treeplant.server.util.AutoPlant;
+import ht.treeplant.server.event.AutoPlant;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +26,7 @@ public class ConfigHandler {
         COMMON.naturalSaplings.refresh();
         COMMON.tossedSaplings.refresh();
         COMMON.brokenSaplings.refresh();
+        COMMON.despawningSaplings.refresh();
     }
 
     public static int secondsToTicks(double seconds) {
@@ -42,6 +43,7 @@ public class ConfigHandler {
         public final PlantingConfig naturalSaplings;
         public final PlantingConfig tossedSaplings;
         public final PlantingConfig brokenSaplings;
+        public final PlantingConfig despawningSaplings;
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.push("What to plant");
@@ -50,7 +52,7 @@ public class ConfigHandler {
                     .define("itemTagForPlantableItems", "treeplant:auto_plantables");
             builder.pop();
 
-            builder.push("When to plant");
+            builder.comment("Set chanceOfPlanting = 0.0 to disable").push("When to plant");
             naturalSaplings = new PlantingConfig(builder,
                     "Saplings that fall naturally (e.g. when leaves decay or when using tree felling mods)",
                     1.0,
@@ -58,20 +60,26 @@ public class ConfigHandler {
                     1.0,
                     2
             );
-            tossedSaplings = new PlantingConfig(builder,
-                    "Saplings that drop when a player breaks a block",
-                    1.0,
-                    0.0,
-                    3.0,
-                    1
-            );
             brokenSaplings = new PlantingConfig(builder,
+                    "Saplings that drop when a player breaks a block",
+                    10.0,
+                    3.0,
+                    1.0,
+                    1
+            );
+            tossedSaplings = new PlantingConfig(builder,
                     "Saplings tossed by players",
-                    2.0,
-                    0.0,
+                    5.0,
+                    3.0,
                     0.0,
                     1
             );
+            despawningSaplings = new PlantingConfig(builder,
+                    "Saplings that are about to despawn, no matter where they came from",
+                    null,
+                    null,
+                    1.0,
+                    2);
             builder.pop();
 
             builder.push("Miscellaneous");
