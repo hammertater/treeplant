@@ -1,33 +1,50 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/treeplant",
   "promos": {
-    "1.16.4-latest": "0.2.0",
-    "1.16.4-recommended": "0.2.0",
-    "1.16.3-latest": "0.2.0",
-    "1.16.3-recommended": "0.2.0",
-    "1.16.1-latest": "0.2.0",
-    "1.16.1-recommended": "0.2.0",
-    "1.15.2-latest": "0.2.0",
-    "1.15.2-recommended": "0.2.0"
+    "1.16.5-latest": "0.3.0",
+    "1.16.5-recommended": "0.3.0",
+    "1.16.4-latest": "0.3.0",
+    "1.16.4-recommended": "0.3.0",
+    "1.16.3-latest": "0.3.0",
+    "1.16.3-recommended": "0.3.0",
+    "1.16.1-latest": "0.3.0",
+    "1.16.1-recommended": "0.3.0",
+    "1.15.2-latest": "0.3.0",
+    "1.15.2-recommended": "0.3.0"
+  },
+  "1.16.5": {
+    "0.1.0": "First version",
+    "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages",
+    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected",
+    "0.2.1": "Don't try to plant empty items\nFixed display name",
+    "0.3.0": "Fixed configuration values not being applied correctly\nAdded option to auto plant despawning saplings"
   },
   "1.16.4": {
     "0.1.0": "First version",
     "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages",
-    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected"
+    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected",
+    "0.2.1": "Don't try to plant empty items\nFixed display name",
+    "0.3.0": "Fixed configuration values not being applied correctly\nAdded option to auto plant despawning saplings"
   },
   "1.16.3": {
     "0.1.0": "First version",
     "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages",
-    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected"
+    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected",
+    "0.2.1": "Don't try to plant empty items\nFixed display name",
+    "0.3.0": "Fixed configuration values not being applied correctly\nAdded option to auto plant despawning saplings"
   },
   "1.16.1": {
     "0.1.0": "First version",
     "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages",
-    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected"
+    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected",
+    "0.2.1": "Don't try to plant empty items\nFixed display name",
+    "0.3.0": "Fixed configuration values not being applied correctly\nAdded option to auto plant despawning saplings"
   },
   "1.15.2": {
     "0.1.0": "First version",
     "0.1.1": "Removed incorrect warning message\nAdded more info to warning messages",
-    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected"
+    "0.2.0": "Added more config options for saplings dropped by leaf decay, block breaking, or item tossing\nAdded config option to prevent players from manually planting saplings\nFixed issue where saplings would sometimes be planted later than expected",
+    "0.2.1": "Don't try to plant empty items\nFixed display name",
+    "0.3.0": "Fixed configuration values not being applied correctly\nAdded option to auto plant despawning saplings"
   }
 }
