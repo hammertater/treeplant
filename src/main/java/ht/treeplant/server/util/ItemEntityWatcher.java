@@ -1,25 +1,15 @@
 package ht.treeplant.server.util;
 
-import ht.treeplant.TreePlant;
 import ht.treeplant.server.config.ConfigHandler;
 import ht.treeplant.server.config.PlantingConfig;
-import net.minecraft.block.Block;
+import ht.treeplant.server.event.AutoPlant;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.DirectionalPlaceContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.lang.ref.WeakReference;
 
-class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
-    private static final int MAX_TICK_ENTROPY = 20;
+public class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
 
-    long tick;
+    private long tick;
     private int totalNumTicks = 0;
     private final long lastPossibleTick;
     private WeakReference<ItemEntity> ref;
@@ -27,60 +17,32 @@ class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
 
     public ItemEntityWatcher(ItemEntity itemEntity, long tickZero, PlantingConfig plantingConfig) {
         this.ref = new WeakReference<>(itemEntity);
-        this.tick = tickZero + (int) RandomUtil.get(plantingConfig.getWiggle());
+        this.tick = tickZero + plantingConfig.getNumTicksBeforePlanting() + (int) RandomUtil.get(plantingConfig.getWiggle());
         this.lastPossibleTick = tick + ConfigHandler.numTicksToRetryPlanting;
         this.plantingConfig = plantingConfig;
     }
 
-    public void activate() {
-        ItemEntity itemEntity = ref.get();
-        if (itemEntity != null && itemEntity.isAlive()) {
-            ItemStack itemStack = itemEntity.getItem();
-            Item item = itemStack.getItem();
-            if (item instanceof BlockItem) {
-                if (noNearbySaplings(
-                        itemEntity.getEntityWorld(),
-                        itemEntity.getPosition(),
-                        ((BlockItem) item).getBlock()
-                )) {
-                    ActionResultType result = ((BlockItem) item).tryPlace(
-                            new DirectionalPlaceContext(
-                                    itemEntity.world,
-                                    itemEntity.getPosition(),
-                                    Direction.DOWN,
-                                    itemStack,
-                                    Direction.UP
-                            )
-                    );
-
-                    if (!result.isSuccess()) {
-                        totalNumTicks += tick;
-                        if (totalNumTicks < lastPossibleTick) {
-                            tick += ConfigHandler.numTicksBetweenTries;
-                            AutoPlant.watch(this);
-                        }
-                    }
-                }
-            } else {
-                TreePlant.LOGGER.warn("I don't know how to plant " + item.getRegistryName() + " (" + item.getItem().getClass().getName() + " is not an instance of " + BlockItem.class.getName() + ")");
-            }
-        }
+    public long getTick() {
+        return tick;
     }
 
-    private boolean noNearbySaplings(World world, BlockPos pos, Block block) {
-        int dis = plantingConfig.getMinDistanceBetweenSaplings() - 1;
-        for (int x = -dis; x <= dis; ++x) {
-            for (int z = -dis; z <= dis; ++z) {
-                if (world.getBlockState(pos.add(x, 0, z)).getBlock() == block) {
-                    return false;
+    public void activate() {
+        ItemEntity itemEntity = ref.get();
+        if (itemEntity != null && itemEntity.isAlive() && PlantUtil.noNearbySaplings(itemEntity, plantingConfig)) {
+            boolean successful = PlantUtil.tryToPlant(itemEntity);
+            if (successful) {
+                totalNumTicks += tick;
+                if (totalNumTicks < lastPossibleTick) {
+                    tick += ConfigHandler.numTicksBetweenTries;
+                    AutoPlant.watch(this);
                 }
             }
         }
-        return true;
     }
 
     @Override
     public int compareTo(ItemEntityWatcher other) {
         return Long.compare(this.tick, other.tick);
     }
+
 }
