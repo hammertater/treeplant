@@ -4,10 +4,10 @@ import ht.treeplant.server.config.ConfigHandler;
 import ht.treeplant.server.config.PlantingConfig;
 import ht.treeplant.server.util.ItemEntityWatcher;
 import ht.treeplant.server.util.PlantUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -79,7 +79,7 @@ public class AutoPlant {
                 PlantingConfig plantingConfig;
                 if (entity == lastTossedItem) {
                     plantingConfig = ConfigHandler.COMMON.tossedSaplings;
-                } else if (entity.getPosition().equals(lastBrokenPos)) {
+                } else if (entity.blockPosition().equals(lastBrokenPos)) {
                     plantingConfig = ConfigHandler.COMMON.brokenSaplings;
                 } else {
                     plantingConfig = ConfigHandler.COMMON.naturalSaplings;

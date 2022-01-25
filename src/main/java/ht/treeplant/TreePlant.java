@@ -5,11 +5,12 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod("treeplant")
+@Mod(TreePlant.MOD_ID)
 public class TreePlant {
     public static final String MOD_ID = "treeplant";
     public static final String MOD_NAME = "HT's TreePlant";
@@ -21,7 +22,7 @@ public class TreePlant {
 
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modBus.addListener((ModConfig.Loading e) -> ConfigHandler.onLoad());
-        modBus.addListener((ModConfig.Reloading e) -> ConfigHandler.onReload());
+        modBus.addListener((ModConfigEvent.Loading e) -> ConfigHandler.onLoad());
+        modBus.addListener((ModConfigEvent.Reloading e) -> ConfigHandler.onReload());
     }
 }

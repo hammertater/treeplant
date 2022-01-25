@@ -3,7 +3,7 @@ package ht.treeplant.server.util;
 import ht.treeplant.server.config.ConfigHandler;
 import ht.treeplant.server.config.PlantingConfig;
 import ht.treeplant.server.event.AutoPlant;
-import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 
 import java.lang.ref.WeakReference;
 
@@ -12,7 +12,7 @@ public class ItemEntityWatcher implements Comparable<ItemEntityWatcher> {
     private long tick;
     private int totalNumTicks = 0;
     private final long lastPossibleTick;
-    private WeakReference<ItemEntity> ref;
+    private final WeakReference<ItemEntity> ref;
     private final PlantingConfig plantingConfig;
 
     public ItemEntityWatcher(ItemEntity itemEntity, long tickZero, PlantingConfig plantingConfig) {
