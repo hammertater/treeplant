@@ -93,7 +93,7 @@ public class AutoPlant {
     }
 
     public static boolean itemStackIsPlantable(ItemStack itemStack) {
-        return !itemStack.isEmpty() && itemStack.getItem().getTags().contains(ConfigHandler.itemTagForSaplings);
+        return !itemStack.isEmpty() && itemStack.is(ConfigHandler.itemTagForSaplings);
     }
 
     public static void watch(ItemEntity itemEntity, PlantingConfig plantingConfig) {

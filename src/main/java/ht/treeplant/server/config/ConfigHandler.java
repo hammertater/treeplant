@@ -2,6 +2,9 @@ package ht.treeplant.server.config;
 
 import ht.treeplant.server.event.AutoPlant;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -9,7 +12,7 @@ public class ConfigHandler {
 
     public static int numTicksToRetryPlanting;
     public static int numTicksBetweenTries;
-    public static ResourceLocation itemTagForSaplings;
+    public static TagKey<Item> itemTagForSaplings;
     public static boolean allowPlantingWithRightClick;
 
     public static void onLoad() {
@@ -20,7 +23,7 @@ public class ConfigHandler {
     public static void onReload() {
         numTicksToRetryPlanting = Math.max(1, secondsToTicks(COMMON.numSecondsToRetryPlanting.get()));
         numTicksBetweenTries = Math.max(1, secondsToTicks(COMMON.numSecondsBetweenTries.get()));
-        itemTagForSaplings = new ResourceLocation(COMMON.itemTagForPlantableItems.get());
+        itemTagForSaplings = ItemTags.create(new ResourceLocation(COMMON.itemTagForPlantableItems.get()));
         allowPlantingWithRightClick = COMMON.allowPlantingWithRightClick.get();
 
         COMMON.naturalSaplings.refresh();
