@@ -1,6 +1,8 @@
 package ht.treeplant;
 
 import ht.treeplant.server.config.ConfigHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -24,5 +26,6 @@ public class TreePlant {
 
         modBus.addListener((ModConfigEvent.Loading e) -> ConfigHandler.onLoad());
         modBus.addListener((ModConfigEvent.Reloading e) -> ConfigHandler.onReload());
+        MinecraftForge.EVENT_BUS.addListener(ConfigHandler::UpdateTags);
     }
 }

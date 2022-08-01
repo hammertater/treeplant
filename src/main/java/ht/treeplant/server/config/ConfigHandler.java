@@ -3,16 +3,23 @@ package ht.treeplant.server.config;
 import ht.treeplant.server.event.AutoPlant;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.TagsUpdatedEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITagManager;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ConfigHandler {
 
     public static int numTicksToRetryPlanting;
     public static int numTicksBetweenTries;
-    public static TagKey<Item> itemTagForSaplings;
+    public static Set<Item> saplings = Collections.emptySet();
     public static boolean allowPlantingWithRightClick;
 
     public static void onLoad() {
@@ -23,7 +30,6 @@ public class ConfigHandler {
     public static void onReload() {
         numTicksToRetryPlanting = Math.max(1, secondsToTicks(COMMON.numSecondsToRetryPlanting.get()));
         numTicksBetweenTries = Math.max(1, secondsToTicks(COMMON.numSecondsBetweenTries.get()));
-        itemTagForSaplings = ItemTags.create(new ResourceLocation(COMMON.itemTagForPlantableItems.get()));
         allowPlantingWithRightClick = COMMON.allowPlantingWithRightClick.get();
 
         COMMON.naturalSaplings.refresh();
@@ -36,9 +42,24 @@ public class ConfigHandler {
         return (int) Math.ceil(seconds * 20.0);
     }
 
+    public static boolean isSapling(Item item) {
+        return saplings.contains(item);
+    }
+
+    public static void UpdateTags(TagsUpdatedEvent event) {
+        ITagManager<Item> itemTags = ForgeRegistries.ITEMS.tags();
+        if (itemTags != null) {
+            saplings = COMMON.itemTagsForPlantableItems.get().stream()
+                    .map(ResourceLocation::tryParse)
+                    .filter(Objects::nonNull)
+                    .flatMap(tagId -> itemTags.getTag(ItemTags.create(tagId)).stream())
+                    .collect(Collectors.toSet());
+        }
+    }
+
     public static class Common {
 
-        protected final ForgeConfigSpec.ConfigValue<String> itemTagForPlantableItems;
+        protected final ForgeConfigSpec.ConfigValue<List<? extends String>> itemTagsForPlantableItems;
         protected final ForgeConfigSpec.DoubleValue numSecondsToRetryPlanting;
         protected final ForgeConfigSpec.DoubleValue numSecondsBetweenTries;
         protected final ForgeConfigSpec.BooleanValue allowPlantingWithRightClick;
@@ -50,9 +71,10 @@ public class ConfigHandler {
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.push("What to plant");
-            itemTagForPlantableItems = builder
+            Predicate<String> itemIdValidator;
+            itemTagsForPlantableItems = builder
                     .comment("Items with this tag will be automatically planted when possible")
-                    .define("itemTagForPlantableItems", "treeplant:auto_plantables");
+                    .defineList("itemTagForPlantableItems", Arrays.asList("treeplant:auto_plantables", "dynamictrees:seeds"),always -> true);
             builder.pop();
 
             builder.comment("Set chanceOfPlanting = 0.0 to disable").push("When to plant");

@@ -1,38 +1,41 @@
 package ht.treeplant.server.util;
 
+import com.ferreusveritas.dynamictrees.DynamicTrees;
 import ht.treeplant.TreePlant;
 import ht.treeplant.server.config.PlantingConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 public class PlantUtil {
 
-    public static boolean tryToPlant(ItemEntity itemEntity) {
-        ItemStack itemStack = itemEntity.getItem();
-        Item item = itemStack.getItem();
-        if (item instanceof BlockItem) {
-            InteractionResult result = ((BlockItem) item).place(
-                    new DirectionalPlaceContext(
-                            itemEntity.getLevel(),
-                            itemEntity.blockPosition(),
-                            Direction.DOWN,
-                            itemStack,
-                            Direction.UP
-                    )
+    public static boolean tryToPlant(ItemEntity entity) {
+        if (entity.getLevel() instanceof ServerLevel level) {
+            InteractionResult result = entity.getItem().useOn(new UseOnContext(
+                    level,
+                    FakePlayerFactory.getMinecraft(level),
+                    InteractionHand.MAIN_HAND,
+                    entity.getItem(),
+                    new BlockHitResult(entity.position(), Direction.DOWN, entity.blockPosition(), true))
             );
             return result == InteractionResult.SUCCESS;
-        } else {
-            TreePlant.LOGGER.warn("I don't know how to plant " + item.getRegistryName() + " (" + item.getClass().getName() + " is not an instance of " + BlockItem.class.getName() + ")");
-            return false;
         }
+
+        return false;
     }
 
     public static boolean noNearbyBlocksOfType(Level level, BlockPos pos, Block block, int minDistanceBetweenSaplings) {
@@ -53,16 +56,25 @@ public class PlantUtil {
 
     public static boolean noNearbySaplings(ItemEntity itemEntity, PlantingConfig plantingConfig) {
         Item item = itemEntity.getItem().getItem();
-        if (item instanceof BlockItem) {
+        Block plant;
+        if (item instanceof BlockItem blockItem) {
+            plant = blockItem.getBlock();
+        } else if (item instanceof IPlantable plantItem) {
+            plant = plantItem.getPlant(itemEntity.getLevel(), itemEntity.blockPosition()).getBlock();
+        } else {
+            return true;
+        }
+
+        if (plant != Blocks.AIR) {
             return noNearbyBlocksOfType(
                     itemEntity.getLevel(),
                     itemEntity.blockPosition(),
-                    ((BlockItem) item).getBlock(),
+                    plant,
                     plantingConfig.getMinDistanceBetweenSaplings()
             );
-        } else {
-            return false;
         }
+
+        return true;
     }
 
 }
