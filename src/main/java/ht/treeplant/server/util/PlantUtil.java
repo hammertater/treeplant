@@ -1,7 +1,5 @@
 package ht.treeplant.server.util;
 
-import com.ferreusveritas.dynamictrees.DynamicTrees;
-import ht.treeplant.TreePlant;
 import ht.treeplant.server.config.PlantingConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,8 +9,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -57,10 +53,10 @@ public class PlantUtil {
     public static boolean noNearbySaplings(ItemEntity itemEntity, PlantingConfig plantingConfig) {
         Item item = itemEntity.getItem().getItem();
         Block plant;
-        if (item instanceof BlockItem blockItem) {
-            plant = blockItem.getBlock();
-        } else if (item instanceof IPlantable plantItem) {
+        if (item instanceof IPlantable plantItem) {
             plant = plantItem.getPlant(itemEntity.getLevel(), itemEntity.blockPosition()).getBlock();
+        } else if (item instanceof BlockItem blockItem) {
+            plant = blockItem.getBlock();
         } else {
             return true;
         }

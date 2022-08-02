@@ -78,7 +78,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
+    minecraft "net.minecraftforge:forge:${mcversion}-${forgeversion}"
 
     compileOnly fg.deobf("curse.maven:dynamictrees-252818:3831578")
 }

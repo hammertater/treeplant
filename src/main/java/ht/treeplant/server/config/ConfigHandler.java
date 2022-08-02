@@ -74,7 +74,7 @@ public class ConfigHandler {
             Predicate<String> itemIdValidator;
             itemTagsForPlantableItems = builder
                     .comment("Items with this tag will be automatically planted when possible")
-                    .defineList("itemTagForPlantableItems", Arrays.asList("treeplant:auto_plantables", "dynamictrees:seeds"),always -> true);
+                    .defineList("itemTagsForPlantableItems", Arrays.asList("treeplant:auto_plantables", "dynamictrees:seeds"),always -> true);
             builder.pop();
 
             builder.comment("Set chanceOfPlanting = 0.0 to disable").push("When to plant");
