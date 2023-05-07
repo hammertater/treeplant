@@ -10,11 +10,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -49,14 +49,14 @@ public class AutoPlant {
     }
 
     private static void plantOnDespawn(ItemExpireEvent event) {
-        ItemEntity entity = event.getEntityItem();
+        ItemEntity entity = event.getEntity();
         if (itemStackIsPlantable(entity.getItem()) && PlantUtil.randomlyWantsToPlant(ConfigHandler.COMMON.despawningSaplings)) {
             PlantUtil.tryToPlant(entity);
         }
     }
 
     public static void detectPlayerToss(ItemTossEvent event) {
-        lastTossedItem = event.getEntityItem();
+        lastTossedItem = event.getEntity();
     }
 
     public static void detectPlayerBlockBreak(BlockEvent.BreakEvent event) {
@@ -66,12 +66,12 @@ public class AutoPlant {
     }
 
     public static void preventManualPlanting(PlayerInteractEvent.RightClickBlock event) {
-        if (!event.getPlayer().isCreative() && itemStackIsPlantable(event.getItemStack())) {
+        if (!event.getEntity().isCreative() && itemStackIsPlantable(event.getItemStack())) {
             event.setUseItem(Event.Result.DENY);
         }
     }
 
-    public static void watchItemEntities(EntityJoinWorldEvent event) {
+    public static void watchItemEntities(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof ItemEntity) {
             ItemStack itemStack = ((ItemEntity) entity).getItem();
