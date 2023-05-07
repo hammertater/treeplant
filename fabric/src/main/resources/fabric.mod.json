@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "treeplant",
+  "version": "${version}",
+
+  "name": "HT's TreePlant",
+  "description": "Let saplings plant themselves.",
+  "authors": [
+    "hammertater"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/treeplant",
+    "sources": "https://github.com/hammertater/treeplant"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "logo.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ht.treeplant.TreePlantFabric"
+    ]
+  },
+
+  "depends": {
+    "forgeconfigapiport": ">=4",
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+  }
+}
