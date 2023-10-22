@@ -2,8 +2,6 @@ package ht.treeplant;
 
 import ht.treeplant.server.config.ConfigHandler;
 import ht.treeplant.server.event.AutoPlantForge;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;

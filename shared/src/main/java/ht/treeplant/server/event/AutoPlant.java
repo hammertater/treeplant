@@ -7,7 +7,6 @@ import ht.treeplant.server.util.ItemEntityWatcher;
 import ht.treeplant.server.util.PlantUtil;
 import ht.treeplant.server.util.RandomUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
