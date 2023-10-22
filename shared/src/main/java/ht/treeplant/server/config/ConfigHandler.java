@@ -74,7 +74,13 @@ public class ConfigHandler {
             builder.push("What to plant");
             Predicate<String> itemIdValidator;
             itemTagsForPlantableItems = builder
-                    .comment("Items with this tag will be automatically planted when possible")
+                    .comment(String.join("\n",
+                                    "Items to automatically plant",
+                            "Specify items using registry names (mod:item), tags (#mod:tag), namespaces (@mod), and Java-style regular expressions",
+                            "Regular expressions must match the whole resource name, including the colon. Some simple examples are:",
+                            " - To match any item ending in _sapling: \".*_sapling\", where .* is a wildcard",
+                            " - To match carrots from any mod: \".*:carrot\"",
+                            " - You can also specify a mod: \"plantmod:.*_seed\""))
                     .defineList("itemTagsForPlantableItems", Arrays.asList(
                             "treeplant:auto_plantables",
                             "#minecraft:saplings",
